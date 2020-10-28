@@ -8,4 +8,7 @@
 out/
 local.properties
 __pycache__/
-/job_data.json
+*job_data*
+*.env
+test.py
+*filteredJobs.json*

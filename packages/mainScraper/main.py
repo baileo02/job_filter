@@ -1,15 +1,12 @@
 from requests import exceptions
 import json
-from packages.mainScraper import scraper as scraper
+from packages.mainScraper import scraper
 
 
 class Main:
 
     """
     Main class that the user will interact with.
-    Configure proxy and requests parameters here
-
-    fetch_html: Method to return html content given url.
 
     get_data: High level method and the only method that the user should interact with. Outputs in json format the
     following fields: Company, logo, location, title, salary, position, date posted, description.
@@ -19,7 +16,11 @@ class Main:
     def __init__(self):
         self._job_data = []
 
-    def get_data(self, website: str, num_jobs: int):
+    def get_data(self, website: str, num_jobs: int = 0):
+        """
+        :param website: Website to scrape
+        :param num_jobs: number of jobs to scrape. It will scrape all of today's job by default.
+        """
         scrape = None
 
         if website.lower() == 'indeed':  # Use indeed scraper
@@ -37,7 +38,8 @@ class Main:
 
         if scrape:
             try:
-                for link in scrape.job_links(num_jobs):     # Grabs job links returns as list
+                links = scrape.job_links(num_jobs) if num_jobs else scrape.today_job_links()
+                for link in links:
                     try:
                         self._job_data.append(scrape.html_parser(link))
                     except exceptions.HTTPError:
@@ -55,16 +57,12 @@ class Main:
                     json.dump(self._job_data, write_file)
 
 
-
-
-
 if __name__ == '__main__':
+    # check line 41 to see how much to scrape.
     s = Main()
     s.get_data('indeed', 1)
-    # with open('job_data.json', 'r') as rf:
-    #     j = json.load(rf)
-    #     for i in j:
-    #         print(i['Link'])
 
-    #todo filter function
+
+
+
 
