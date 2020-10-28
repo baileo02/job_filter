@@ -1,7 +1,5 @@
 import json
 
-# Data loading
-
 
 
 def job_filter():

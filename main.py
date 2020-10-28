@@ -1,6 +1,6 @@
 from requests import exceptions
 import json
-from packages.mainScraper import scraper
+import scraper
 
 
 class Main:
@@ -53,7 +53,7 @@ class Main:
                         continue
 
             finally:
-                with open("../../job_data.json", "w") as write_file:
+                with open("job_data.json", "w") as write_file:
                     json.dump(self._job_data, write_file)
 
 
